@@ -1,6 +1,6 @@
 FROM heffer/oracle-java8:latest
 MAINTAINER Sven Reul <docker@heffer.de>
-ENV SCALA_VERSION 2.11.7
+ENV SCALA_VERSION 2.12.0-M2
 ENV SBT_VERSION 0.13.8
 RUN \
   wget -O /tmp/scala.deb http://downloads.typesafe.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb && \
