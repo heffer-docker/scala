@@ -1,16 +1,11 @@
-FROM heffer/oracle-java8:latest
-MAINTAINER Sven Reul <docker@heffer.de>
-ENV SCALA_VERSION 2.11.7
-ENV SBT_VERSION 0.13.9
-RUN \
-  wget -O /tmp/scala.deb http://downloads.typesafe.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.deb && \
-  dpkg -i /tmp/scala.deb && \
-  wget -O /tmp/sbt.tgz https://dl.bintray.com/sbt/native-packages/sbt/${SBT_VERSION}/sbt-${SBT_VERSION}.tgz && \
+FROM heffer/openjdk:latest
+LABEL maintainer="Sven Reul <sven@heffer.de>"
+ARG SCALA_VERSION=2.12.8
+ADD https://downloads.lightbend.com/scala/${SCALA_VERSION}/scala-${SCALA_VERSION}.tgz /tmp/scala.tgz
+RUN apk --no-cache add bash && \
+  mkdir -p /opt && \
   cd /opt && \
-  tar zxf /tmp/sbt.tgz
-ENV PATH $PATH:/opt/sbt/bin
-RUN \
-  cd /tmp && \
-  sbt exit && \
-  rm -rf /tmp/*
-CMD ["scala"]
+  tar zxvf /tmp/scala.tgz && \
+  mv /opt/scala* /opt/scala && \
+  rm -f /tmp/scala.tgz
+ENTRYPOINT ["/opt/scala/bin/scala"]
